@@ -31,6 +31,7 @@
             animation: wave 15s linear infinite;
             z-index: -1;
         }
+
         body::after {
             content: '';
             position: fixed;
@@ -43,9 +44,15 @@
             animation: wave 10s linear infinite reverse;
             z-index: -1;
         }
+
         @keyframes wave {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
+            0% {
+                transform: translateX(0);
+            }
+
+            100% {
+                transform: translateX(-50%);
+            }
         }
 
         #slides-container {
@@ -434,7 +441,7 @@
 
                     <div class="flex items-center justify-center gap-4 mb-2">
                         <span class="text-4xl">🎵</span>
-                        <p class="text-3xl font-bold">露營時朋友決定先走，只剩你一個，這時候要唱什麼歌？</p>
+                        <p class="text-3xl font-bold">露營時朋友決定先走，只剩你一個<br>這時候要唱什麼歌？</p>
                     </div>
 
                     <p id="joke-hint" class="text-lg opacity-50 mt-2 font-bold animate-pulse">（點擊看答案）</p>
