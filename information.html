@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>露營社烤披薩行前說明</title>
+    <!-- 引入 Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 引入字體 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&family=Noto+Sans+TC:wght@300;400;700&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', 'Noto Sans TC', sans-serif;
+            background-color: #092338;
+            color: #efeee1;
+            overflow: hidden;
+            margin: 0;
+        }
+
+        #slides-container {
+            width: 100%;
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slide {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 3rem;
+            box-sizing: border-box;
+            background-color: #092338;
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            line-height: 1.6;
+        }
+
+        .slide-title {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            color: #efeee1;
+            width: 100%;
+            max-width: 56rem;
+            text-align: left;
+        }
+
+        @media (min-width: 768px) {
+            .slide-title {
+                font-size: 4rem;
+            }
+        }
+
+        .content-box {
+            width: 100%;
+            max-width: 56rem;
+            text-align: left;
+        }
+
+        .content-text {
+            font-size: 1.45rem;
+            font-weight: 400;
+        }
+
+        @media (min-width: 768px) {
+            .content-text {
+                font-size: 1.6rem;
+            }
+        }
+
+        /* 導航按鈕 */
+        .nav-button {
+            position: fixed;
+            z-index: 50;
+            bottom: 2rem;
+            background-color: rgba(239, 238, 225, 0.1);
+            color: #efeee1;
+            border: none;
+            border-radius: 9999px;
+            width: 3.5rem;
+            height: 3.5rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .nav-button:hover {
+            background-color: rgba(239, 238, 225, 0.2);
+        }
+
+        .nav-button:disabled {
+            opacity: 0.1;
+            cursor: not-allowed;
+        }
+
+        #prev-slide {
+            left: 2rem;
+        }
+
+        #next-slide {
+            right: 2rem;
+        }
+
+        #slide-counter {
+            position: fixed;
+            bottom: 2.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 1.1rem;
+            color: rgba(239, 238, 225, 0.6);
+            font-weight: 700;
+        }
+
+        /* 表格樣式 */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        td {
+            padding: 0.8rem 1rem;
+            border-bottom: 1px solid rgba(239, 238, 225, 0.1);
+            font-size: 1.25rem;
+        }
+
+        .warning-tag {
+            color: #f87171;
+            font-weight: 700;
+        }
+
+        .highlight-blue {
+            color: #60a5fa;
+            font-weight: 700;
+        }
+
+        .card-bg {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        /* 目錄按鈕樣式 */
+        .toc-item {
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+        }
+
+        .toc-item:hover {
+            background-color: rgba(239, 238, 225, 0.1);
+            padding-left: 1.5rem;
+            border-left: 4px solid #60a5fa;
+            color: #60a5fa;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="slides-container">
+        <!-- 1. 標題頁 -->
+        <div class="slide" style="transform: translateX(0%);">
+            <div class="text-center">
+                <h2 class="text-3xl md:text-4xl font-light opacity-70 mb-2">露營社</h2>
+                <h1 class="text-6xl md:text-8xl font-bold">烤披薩活動</h1>
+                <p class="text-3xl md:text-4xl font-light mt-4">行前說明</p>
+            </div>
+        </div>
+
+        <!-- 2. 目錄頁 (新增) -->
+        <div class="slide" style="transform: translateX(100%);">
+            <div class="content-box">
+                <h2 class="slide-title">活動目錄</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 content-text">
+                    <div class="toc-item p-4 rounded-lg card-bg" onclick="goToSlide(2)">01 基本資訊</div>
+                    <div class="toc-item p-4 rounded-lg card-bg" onclick="goToSlide(3)">02 活動費用</div>
+                    <div class="toc-item p-4 rounded-lg card-bg" onclick="goToSlide(4)">03 集合與交通</div>
+                    <div class="toc-item p-4 rounded-lg card-bg" onclick="goToSlide(5)">04 準備物品</div>
+                    <div class="toc-item p-4 rounded-lg card-bg" onclick="goToSlide(6)">05 注意事項</div>
+                    <div class="toc-item p-4 rounded-lg card-bg" onclick="goToSlide(7)">06 行程安排 (Day 1)</div>
+                    <div class="toc-item p-4 rounded-lg card-bg" onclick="goToSlide(8)">07 行程安排 (Day 2)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. 基本資訊 -->
+        <div class="slide" style="transform: translateX(200%);">
+            <div class="content-box">
+                <h2 class="slide-title">基本資訊</h2>
+                <div class="space-y-8 content-text">
+                    <div>
+                        <p class="font-bold opacity-70">時間</p>
+                        <p>2026/03/28 (六) 14:00 - 03/29 (日) 13:00</p>
+                    </div>
+                    <div>
+                        <p class="font-bold opacity-70">地點</p>
+                        <p>師大林口校區校門口</p>
+                        <p class="text-lg opacity-50">新北市林口區仁愛路一段 2 號</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. 費用 -->
+        <div class="slide" style="transform: translateX(300%);">
+            <div class="content-box">
+                <h2 class="slide-title">活動費用</h2>
+                <div
+                    class="flex flex-col items-center justify-center h-64 border-2 border-white/10 rounded-3xl card-bg">
+                    <p class="text-2xl font-bold">每人僅需</p>
+                    <p class="text-8xl font-bold">200</p>
+                    <p class="text-xl mt-4 opacity-70 font-bold">（由社團補貼）</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5. 集合與交通 -->
+        <div class="slide" style="transform: translateX(400%);">
+            <div class="content-box">
+                <h2 class="slide-title">集合與交通</h2>
+                <div class="grid md:grid-cols-2 gap-8 content-text">
+                    <div class="card-bg p-8 rounded-2xl flex flex-col justify-center">
+                        <h3 class="font-bold mb-4 text-2xl text-white">大眾運輸</h3>
+                        <p>捷運圓山站 2 號出口集合</p>
+                        <p>搭乘 <span class="highlight-blue">936 號公車</span></p>
+                        <p class="text-lg mt-2 opacity-50">直達師大林口校區 (約 20 分鐘一班)</p>
+                    </div>
+                    <div class="card-bg p-8 rounded-2xl flex flex-col justify-center">
+                        <div class="mt-8">
+                            <h3 class="font-bold mb-2 text-2xl text-white">機車前往</h3>
+                            <p>請導航至師大林口校區校門口</p>
+                        </div>
+                    </div>
+                </div>
+                <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d57835.22882569582!2d121.41075571403054!3d25.044191981648233!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442a655b8ef009d%3A0x39da3a4d5e51b2a8!2z5ZyL56uL6Ie654Gj5bir56-E5aSn5a24IOael-WPo-agoeWNgA!5e0!3m2!1szh-TW!2stw!4v1774190336410!5m2!1szh-TW!2stw"
+                    width="100%" height="350"
+                    style="border:0; display: block; margin: 1rem auto; max-width: 56rem; border-radius: 1rem;"
+                    allowfullscreen="" loading="lazy">
+                </iframe>
+            </div>
+        </div>
+
+        <!-- 6. 物品清單 -->
+        <div class="slide" style="transform: translateX(500%);">
+            <div class="content-box">
+                <h2 class="slide-title">準備物品清單</h2>
+                <table class="card-bg rounded-xl">
+                    <tbody>
+                        <tr>
+                            <td>拖鞋</td>
+                            <td>換洗衣物</td>
+                            <td>沐浴用品</td>
+                        </tr>
+                        <tr>
+                            <td>毛巾</td>
+                            <td><span class="highlight-blue">餐具 (碗筷杯子)</span></td>
+                            <td>充電用品</td>
+                        </tr>
+                        <tr>
+                            <td>* 枕頭</td>
+                            <td>* 睡袋/墊</td>
+                            <td><span class="warning-tag">牙刷、牙膏</span></td>
+                        </tr>
+                        <tr>
+                            <td>個人藥品</td>
+                            <td>衛生紙</td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="mt-4 text-lg opacity-60">
+                    <p>※ "*" 表示非必要，可用其他物品（如被子、衣物）替代。</p>
+                    <p>※ <span class="highlight-blue">餐具</span> 請務必自備，響應環保。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 7. 重要提醒 -->
+        <div class="slide" style="transform: translateX(600%);">
+            <div class="content-box">
+                <h2 class="slide-title">特別注意事項</h2>
+                <div class="space-y-6 content-text">
+                    <div class="flex items-start gap-4 p-4 card-bg rounded-xl border-l-4 border-red-500">
+                        <p>第一天 <span class="warning-tag">中午不供餐</span>，建議吃飽後再前往集合。</p>
+                    </div>
+                    <div class="flex items-start gap-4 p-4 card-bg rounded-xl border-l-4 border-red-500">
+                        <p>烤披薩用的食材請 <span class="warning-tag">自行準備</span> 並確保能吃完 (約 0.5~1 人份)。</p>
+                    </div>
+                    <div class="flex items-start gap-4 p-4 card-bg rounded-xl border-l-4 border-red-500">
+                        <p>住宿地點 <span class="warning-tag">僅有一間浴室</span>，請大家儘早開始輪流洗澡。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 8. 行程安排 (Day 1) -->
+        <div class="slide" style="transform: translateX(700%);">
+            <div class="content-box">
+                <h2 class="slide-title">行程表 (Day 1)</h2>
+                <div class="space-y-3 content-text card-bg p-8 rounded-2xl">
+                    <p><strong>14:00 - 14:10</strong> 集合到 Patty 小屋</p>
+                    <p><strong>14:10 - 14:40</strong> 參觀設備</p>
+                    <p><strong>14:40 - 16:00</strong> 活動時間</p>
+                    <p><strong>16:00 - 19:30</strong> <span class="highlight-blue">Pizza Time!</span> (動手做披薩)</p>
+                    <p><strong>19:30 - 20:30</strong> 晚間活動</p>
+                    <p><strong>20:30 - 21:00</strong> 梳洗就寢</p>
+                    <p class="italic opacity-40">21:00 之後：i 珍食時光</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 9. 行程安排 (Day 2) -->
+        <div class="slide" style="transform: translateX(800%);">
+            <div class="content-box">
+                <h2 class="slide-title">行程表 (Day 2)</h2>
+                <div class="space-y-8 content-text">
+                    <div class="card-bg p-8 rounded-2xl">
+                        <p><strong>08:00 - 10:00</strong> 林口在地早餐</p>
+                        <p><strong>10:00 - 11:30</strong> 晨間閱讀時間</p>
+                        <p class="font-bold text-white text-2xl mt-8">13:00 快樂回家</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 10. 結尾 -->
+        <div class="slide" style="transform: translateX(900%);">
+            <div class="text-center">
+                <h1 class="text-7xl md:text-9xl font-bold">開心地烤吧</h1>
+                <p class="text-3xl md:text-4xl mt-8 opacity-40 italic">Pizza Party @ Linkou</p>
+                <p class="text-xl mt-4 opacity-30">Have a tasty trip!</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 導航 -->
+    <button id="prev-slide" class="nav-button" aria-label="上一頁">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"
+            class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+        </svg>
+    </button>
+    <button id="next-slide" class="nav-button" aria-label="下一頁">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"
+            class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+        </svg>
+    </button>
+
+    <div id="slide-counter">1 / 10</div>
+
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        const prevBtn = document.getElementById('prev-slide');
+        const nextBtn = document.getElementById('next-slide');
+        const counter = document.getElementById('slide-counter');
+        let current = 0;
+
+        function update() {
+            slides.forEach((s, i) => {
+                s.style.transform = `translateX(${(i - current) * 100}%)`;
+            });
+            prevBtn.disabled = current === 0;
+            nextBtn.disabled = current === slides.length - 1;
+            counter.innerText = `${current + 1} / ${slides.length}`;
+        }
+
+        // 新增：跳轉到特定頁面的功能
+        window.goToSlide = function (index) {
+            current = index;
+            update();
+        };
+
+        prevBtn.onclick = () => { if (current > 0) current--; update(); };
+        nextBtn.onclick = () => { if (current < slides.length - 1) current++; update(); };
+
+        document.onkeydown = (e) => {
+            if (e.key === 'ArrowLeft') prevBtn.click();
+            if (e.key === 'ArrowRight') nextBtn.click();
+        };
+
+        update();
+    </script>
+</body>
+
+</html>

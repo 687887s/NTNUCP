@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <base target="_top">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Noto+Sans+TC:wght@400;700&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            background-color: #092338;
+            margin: 0;
+            padding: 0;
+        }
+
+        .loading-screen {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: white;
+            font-family: sans-serif;
+        }
+
+        #loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            /* 加入中心微亮的漸層，提升空間感 */
+            background: radial-gradient(circle at center, #153c5e 0%, #092338 100%);
+            z-index: 9999;
+            color: white;
+            /* 讓讀取畫面消失時有平滑的淡出效果 */
+            transition: opacity 0.5s ease-out;
+        }
+
+        /* 現代感雙環發光旋轉器 */
+        .loader-wrapper {
+            position: relative;
+            width: 70px;
+            height: 70px;
+            margin-bottom: 35px;
+        }
+
+        .spinner-ring {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 3px solid transparent;
+            border-top-color: #60a5fa;
+            /* 亮藍色 */
+            border-right-color: #60a5fa;
+            animation: spin 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+            box-shadow: 0 0 15px rgba(96, 165, 250, 0.4);
+            /* 發光效果 */
+        }
+
+        .spinner-ring:nth-child(2) {
+            width: 70%;
+            height: 70%;
+            top: 15%;
+            left: 15%;
+            border-top-color: #93c5fd;
+            /* 淺藍色 */
+            border-right-color: transparent;
+            border-left-color: #93c5fd;
+            animation: spin-reverse 1s linear infinite;
+            box-shadow: 0 0 10px rgba(147, 197, 253, 0.3);
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes spin-reverse {
+            0% {
+                transform: rotate(360deg);
+            }
+
+            100% {
+                transform: rotate(0deg);
+            }
+        }
+
+        /* 標題與副標題動畫 */
+        .title {
+            font-size: 1.4rem;
+            letter-spacing: 0.4em;
+            /* 增加字距更顯大氣 */
+            font-weight: 800;
+            margin-bottom: 12px;
+            /* 金屬光澤漸層字 */
+            background: linear-gradient(to right, #ffffff, #93c5fd);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: pulse-text 2s ease-in-out infinite;
+        }
+
+        .subtitle {
+            font-size: 0.95rem;
+            opacity: 0.7;
+            letter-spacing: 0.1em;
+            animation: fade-up 1s ease-out;
+        }
+
+        @keyframes pulse-text {
+
+            0%,
+            100% {
+                opacity: 0.8;
+                filter: drop-shadow(0 0 2px rgba(147, 197, 253, 0));
+            }
+
+            50% {
+                opacity: 1;
+                filter: drop-shadow(0 0 8px rgba(147, 197, 253, 0.6));
+            }
+        }
+
+        @keyframes fade-up {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 0.7;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="loading-screen">
+        <div class="loader-wrapper">
+            <div class="spinner-ring"></div>
+            <div class="spinner-ring"></div>
+        </div>
+        <div class="title">NTNU CAMPING CLUB</div>
+    </div>
+
+    <div id="content"></div>
+
+    <script>
+        window.onload = function () {
+            // 1. 判斷裝置
+            var mode = (window.innerWidth > 1000) ? 'pc' : 'mobile';
+            console.log("偵測到模式:", mode);
+
+            // 2. 向後端請求內容
+            google.script.run.withSuccessHandler(function (htmlContent) {
+                var contentDiv = document.getElementById('content');
+                contentDiv.innerHTML = htmlContent;
+                var loadingScreen = document.getElementById('loading-screen');
+                loadingScreen.style.opacity = '0'; // 觸發 CSS transition
+                setTimeout(function () {
+                    loadingScreen.style.display = 'none'; // 動畫播完後徹底隱藏
+                }, 500);
+                // 3. 重要：手動觸發注入的腳本
+                executeInjectedScripts(contentDiv);
+
+            }).getFileContent(mode);
+        };
+
+        // 讓動態注入的 <script> 標籤能夠執行的函數
+        function executeInjectedScripts(container) {
+            var scripts = container.querySelectorAll("script");
+            scripts.forEach(function (oldScript) {
+                var newScript = document.createElement("script");
+                Array.from(oldScript.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value));
+                newScript.appendChild(document.createTextNode(oldScript.innerHTML));
+                oldScript.parentNode.replaceChild(newScript, oldScript);
+            });
+        }
+    </script>
+</body>
+
+</html>
