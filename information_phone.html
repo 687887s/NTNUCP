@@ -1,480 +1,476 @@
-<!DOCTYPE html>
-<html lang="zh-TW">
+<style>
+    :root {
+        /* --- 極大化縮放參數 --- */
+        --content-scale: 1.8;
+        /* 大幅增加縮放比例 */
+        --card-padding: 1.2rem;
+        /* 稍微壓縮內距以換取空間 */
+        --content-max-width: 98vw;
+        /* 填滿螢幕寬度 */
+        --base-gap: 1.5rem;
+        /* 模組間距 */
+    }
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>露營社烤披薩行前說明 - 全屏完整版</title>
-    <!-- 引入 Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- 引入字體 -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&family=Noto+Sans+TC:wght@300;400;700&display=swap"
-        rel="stylesheet">
-    <style>
-        :root {
-            /* --- 極大化縮放參數 --- */
-            --content-scale: 1.8;
-            /* 大幅增加縮放比例 */
-            --card-padding: 1.2rem;
-            /* 稍微壓縮內距以換取空間 */
-            --content-max-width: 98vw;
-            /* 填滿螢幕寬度 */
-            --base-gap: 1.5rem;
-            /* 模組間距 */
+    body {
+        font-family: 'Inter', 'Noto Sans TC', sans-serif;
+        background-color: #092338;
+        color: #efeee1;
+        overflow: hidden;
+        margin: 0;
+        touch-action: pan-y pinch-zoom;
+    }
+
+    #slides-container {
+        width: 100%;
+        height: 100vh;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .slide {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 1rem 0.5rem 6.5rem 0.5rem;
+        box-sizing: border-box;
+        background-color: #092338;
+        transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        line-height: 1.3;
+    }
+
+    /* 標題極大化 */
+    .slide-title {
+        font-size: calc(2.2rem * var(--content-scale));
+        font-weight: 800;
+        margin-bottom: calc(1.2rem * var(--content-scale));
+        color: #efeee1;
+        width: 100%;
+        max-width: var(--content-max-width);
+        text-align: left;
+        border-left: 10px solid #60a5fa;
+        padding-left: 1rem;
+        letter-spacing: -0.02em;
+    }
+
+    .content-box {
+        width: 100%;
+        max-width: var(--content-max-width);
+        text-align: left;
+        display: flex;
+        flex-direction: column;
+        gap: calc(var(--base-gap) * (var(--content-scale) * 0.8));
+    }
+
+    /* 內文字體大幅提升 */
+    .content-text {
+        font-size: calc(1.15rem * var(--content-scale));
+    }
+
+    /* 導航按鈕 */
+    .nav-button {
+        position: fixed;
+        z-index: 50;
+        bottom: 2rem;
+        background-color: rgba(239, 238, 225, 0.15);
+        backdrop-filter: blur(15px);
+        color: #efeee1;
+        border: 2px solid rgba(239, 238, 225, 0.3);
+        border-radius: 50%;
+        width: 4.5rem;
+        height: 4.5rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .nav-button:active {
+        background-color: rgba(96, 165, 250, 0.6);
+        transform: scale(0.85);
+    }
+
+    .nav-button:disabled {
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    #prev-slide {
+        left: 1.5rem;
+    }
+
+    #next-slide {
+        right: 1.5rem;
+    }
+
+    #slide-counter {
+        position: fixed;
+        bottom: 3.5rem;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 1.4rem;
+        color: rgba(239, 238, 225, 0.5);
+        font-weight: 800;
+        letter-spacing: 0.4rem;
+    }
+
+    /* 全螢幕感卡片設計 */
+    .card-bg {
+        background-color: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 1.5rem;
+        padding: calc(var(--card-padding) * var(--content-scale));
+        width: 100%;
+        box-sizing: border-box;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    }
+
+    /* 表格文字與間距 */
+    table td {
+        padding: 1.1rem 0.4rem;
+        border-bottom: 2px solid rgba(239, 238, 225, 0.1);
+        font-size: calc(1.05rem * var(--content-scale));
+    }
+
+    /* 目錄項 */
+    .toc-item {
+        cursor: pointer;
+        transition: all 0.2s ease;
+        margin-bottom: 1rem;
+        padding: calc(1.2rem * var(--content-scale));
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: calc(1.2rem * var(--content-scale));
+        font-weight: 600;
+    }
+
+    .toc-item:active {
+        background-color: rgba(96, 165, 250, 0.4);
+    }
+
+    .toc-item::after {
+        content: '→';
+        opacity: 0.6;
+    }
+
+    .warning-tag {
+        color: #f87171;
+        font-weight: 900;
+    }
+
+    .highlight-blue {
+        color: #60a5fa;
+        font-weight: 900;
+    }
+
+    .map-btn {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        color: #efeee1;
+        background: linear-gradient(135deg, rgba(66, 133, 244, 0.2) 0%, rgba(52, 168, 83, 0.2) 100%);
+        border: 4px solid rgba(255, 255, 255, 0.2);
+        transition: all 0.3s ease;
+    }
+
+    .map-btn:active {
+        transform: scale(0.98);
+        background: linear-gradient(135deg, rgba(66, 133, 244, 0.4) 0%, rgba(52, 168, 83, 0.4) 100%);
+    }
+
+    @keyframes swipe-dot {
+
+        0%,
+        100% {
+            transform: translateX(0);
         }
 
-        body {
-            font-family: 'Inter', 'Noto Sans TC', sans-serif;
-            background-color: #092338;
-            color: #efeee1;
-            overflow: hidden;
-            margin: 0;
-            touch-action: pan-y pinch-zoom;
+        25% {
+            transform: translateX(-24px);
         }
 
-        #slides-container {
-            width: 100%;
-            height: 100vh;
-            position: relative;
-            overflow: hidden;
+        75% {
+            transform: translateX(24px);
         }
+    }
 
-        .slide {
-            width: 100%;
-            height: 100%;
-            position: absolute;
-            top: 0;
-            left: 0;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 1rem 0.5rem 6.5rem 0.5rem;
-            box-sizing: border-box;
-            background-color: #092338;
-            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-            line-height: 1.3;
-        }
+    .animate-swipe-dot {
+        animation: swipe-dot 2.5s ease-in-out infinite;
+    }
+</style>
 
-        /* 標題極大化 */
-        .slide-title {
-            font-size: calc(2.2rem * var(--content-scale));
-            font-weight: 800;
-            margin-bottom: calc(1.2rem * var(--content-scale));
-            color: #efeee1;
-            width: 100%;
-            max-width: var(--content-max-width);
-            text-align: left;
-            border-left: 10px solid #60a5fa;
-            padding-left: 1rem;
-            letter-spacing: -0.02em;
-        }
-
-        .content-box {
-            width: 100%;
-            max-width: var(--content-max-width);
-            text-align: left;
-            display: flex;
-            flex-direction: column;
-            gap: calc(var(--base-gap) * (var(--content-scale) * 0.8));
-        }
-
-        /* 內文字體大幅提升 */
-        .content-text {
-            font-size: calc(1.15rem * var(--content-scale));
-        }
-
-        /* 導航按鈕 */
-        .nav-button {
-            position: fixed;
-            z-index: 50;
-            bottom: 2rem;
-            background-color: rgba(239, 238, 225, 0.15);
-            backdrop-filter: blur(15px);
-            color: #efeee1;
-            border: 2px solid rgba(239, 238, 225, 0.3);
-            border-radius: 50%;
-            width: 4.5rem;
-            height: 4.5rem;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .nav-button:active {
-            background-color: rgba(96, 165, 250, 0.6);
-            transform: scale(0.85);
-        }
-
-        .nav-button:disabled {
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        #prev-slide {
-            left: 1.5rem;
-        }
-
-        #next-slide {
-            right: 1.5rem;
-        }
-
-        #slide-counter {
-            position: fixed;
-            bottom: 3.5rem;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 1.4rem;
-            color: rgba(239, 238, 225, 0.5);
-            font-weight: 800;
-            letter-spacing: 0.4rem;
-        }
-
-        /* 全螢幕感卡片設計 */
-        .card-bg {
-            background-color: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            border-radius: 1.5rem;
-            padding: calc(var(--card-padding) * var(--content-scale));
-            width: 100%;
-            box-sizing: border-box;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-        }
-
-        /* 表格文字與間距 */
-        table td {
-            padding: 1.1rem 0.4rem;
-            border-bottom: 2px solid rgba(239, 238, 225, 0.1);
-            font-size: calc(1.05rem * var(--content-scale));
-        }
-
-        /* 目錄項 */
-        .toc-item {
-            cursor: pointer;
-            transition: all 0.2s ease;
-            margin-bottom: 1rem;
-            padding: calc(1.2rem * var(--content-scale));
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            font-size: calc(1.2rem * var(--content-scale));
-            font-weight: 600;
-        }
-
-        .toc-item:active {
-            background-color: rgba(96, 165, 250, 0.4);
-        }
-
-        .toc-item::after {
-            content: '→';
-            opacity: 0.6;
-        }
-
-        .warning-tag {
-            color: #f87171;
-            font-weight: 900;
-        }
-
-        .highlight-blue {
-            color: #60a5fa;
-            font-weight: 900;
-        }
-
-        .map-btn {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-decoration: none;
-            color: #efeee1;
-            background: linear-gradient(135deg, rgba(66, 133, 244, 0.2) 0%, rgba(52, 168, 83, 0.2) 100%);
-            border: 4px solid rgba(255, 255, 255, 0.2);
-            transition: all 0.3s ease;
-        }
-
-        .map-btn:active {
-            transform: scale(0.98);
-            background: linear-gradient(135deg, rgba(66, 133, 244, 0.4) 0%, rgba(52, 168, 83, 0.4) 100%);
-        }
-    </style>
-</head>
-
-<body>
-
-    <div id="slides-container">
-        <!-- 1. 標題頁 -->
-        <div class="slide" style="transform: translateX(0%);">
-            <div class="text-center">
-                <div class="w-40 h-2.5 bg-blue-400 mx-auto mb-16"></div>
-                <h2 class="text-2xl opacity-60 tracking-[0.6em] mb-8">CAMPING CLUB</h2>
-                <h1 class="text-8xl font-black mb-10 leading-tight">期中露營</h1>
-                <p class="text-4xl font-light opacity-80">行前說明手冊</p>
-                <div class="mt-28 flex flex-col items-center opacity-60">
-                    <div class="w-12 h-20 border-4 border-white rounded-full flex justify-center p-3">
-                        <div class="w-2.5 bg-white h-6 rounded-full animate-bounce"></div>
-                    </div>
+<div id="slides-container">
+    <!-- 1. 標題頁 -->
+    <div class="slide" style="transform: translateX(0%);">
+        <div class="text-center">
+            <div class="w-40 h-2.5 bg-blue-400 mx-auto mb-16"></div>
+            <h2 class="text-2xl opacity-60 tracking-[0.6em] mb-8">NTNU CAMPING CLUB</h2>
+            <h1 class="text-8xl font-black mb-10 leading-tight">海邊的露營</h1>
+            <p class="text-4xl font-light opacity-80">行前說明手冊</p>
+            <div class="mt-28 flex flex-col items-center opacity-60">
+                <div class="w-24 h-12 border-4 border-white rounded-full flex items-center justify-center">
+                    <div class="w-5 h-5 bg-white rounded-full animate-swipe-dot"></div>
                 </div>
+                <p class="mt-5 text-xl tracking-[0.3em] font-bold">左右滑動</p>
             </div>
         </div>
+    </div>
 
-        <!-- 2. 目錄頁 (補全行程項目) -->
-        <div class="slide" style="transform: translateX(100%);">
-            <h2 class="slide-title">活動目錄</h2>
-            <div class="content-box">
-                <div class="toc-item card-bg" onclick="goToSlide(2)">01 基本資訊</div>
-                <div class="toc-item card-bg" onclick="goToSlide(3)">02 活動費用</div>
-                <div class="toc-item card-bg" onclick="goToSlide(4)">03 集合與交通</div>
-                <div class="toc-item card-bg" onclick="goToSlide(5)">04 準備物品</div>
-                <div class="toc-item card-bg" onclick="goToSlide(6)">05 注意事項</div>
-                <div class="toc-item card-bg" onclick="goToSlide(7)">06 行程</div>
-                <div class="toc-item card-bg" onclick="goToSlide(8)">07 Day 3</div>
+    <!-- 2. 目錄頁 (補全行程項目) -->
+    <div class="slide" style="transform: translateX(100%);">
+        <h2 class="slide-title">活動目錄</h2>
+        <div class="content-box">
+            <div class="toc-item card-bg" onclick="goToSlide(2)">01 基本資訊</div>
+            <div class="toc-item card-bg" onclick="goToSlide(3)">02 活動費用</div>
+            <div class="toc-item card-bg" onclick="goToSlide(4)">03 集合與交通</div>
+            <div class="toc-item card-bg" onclick="goToSlide(5)">04 準備物品</div>
+            <div class="toc-item card-bg" onclick="goToSlide(6)">05 注意事項</div>
+            <div class="toc-item card-bg" onclick="goToSlide(7)">06 行程</div>
+        </div>
+    </div>
+
+    <!-- 3. 基本資訊 -->
+    <div class="slide" style="transform: translateX(200%);">
+        <h2 class="slide-title">基本資訊</h2>
+        <div class="content-box">
+            <div class="card-bg">
+                <p class="text-blue-400 font-bold text-xl tracking-widest mb-6 uppercase">Timeline</p>
+                <p class="text-4xl font-black">03/28 (六) 14:00</p>
+                <div class="h-1 bg-white/20 my-8"></div>
+                <p class="text-4xl font-black">03/29 (日) 13:00</p>
+            </div>
+            <div class="card-bg">
+                <p class="text-blue-400 font-bold text-xl tracking-widest mb-6 uppercase">Location</p>
+                <p class="text-4xl font-black">師大林口校區</p>
+                <p class="text-2xl opacity-60 mt-4">新北市林口區仁愛路一段 2 號</p>
             </div>
         </div>
+    </div>
 
-        <!-- 3. 基本資訊 -->
-        <div class="slide" style="transform: translateX(200%);">
-            <h2 class="slide-title">基本資訊</h2>
-            <div class="content-box">
-                <div class="card-bg">
-                    <p class="text-blue-400 font-bold text-xl tracking-widest mb-6 uppercase">Timeline</p>
-                    <p class="text-4xl font-black">05/01 (五) 14:00</p>
-                    <div class="h-1 bg-white/20 my-8"></div>
-                    <p class="text-4xl font-black">05/03 (日) 11:00</p>
+    <!-- 4. 費用 -->
+    <div class="slide" style="transform: translateX(300%);">
+        <h2 class="slide-title">活動費用</h2>
+        <div class="content-box">
+            <div class="flex flex-col items-center justify-center py-24 card-bg text-center">
+                <p class="text-3xl opacity-60 mb-8">每一位社員僅需</p>
+                <div class="flex items-baseline">
+                    <span class="text-6xl mr-4">$</span>
+                    <span class="text-[12rem] font-black leading-none">200</span>
                 </div>
-                <div class="card-bg">
-                    <p class="text-blue-400 font-bold text-xl tracking-widest mb-6 uppercase">Location</p>
-                    <p class="text-4xl font-black">三芝老農夫農場</p>
-                    <p class="text-2xl opacity-60 mt-4">新北市三芝區芝蘭路62之5號</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- 4. 費用 -->
-        <div class="slide" style="transform: translateX(300%);">
-            <h2 class="slide-title">活動費用</h2>
-            <div class="content-box">
-                <div class="flex flex-col items-center justify-center py-24 card-bg text-center">
-                    <p class="text-3xl opacity-60 mb-8">每一位社員僅需</p>
-                    <div class="flex items-baseline">
-                        <span class="text-6xl mr-4">$</span>
-                        <span class="text-[10rem] font-black leading-none">1,300</span>
-                    </div>
-                    <div class="mt-16 px-12 py-5 bg-blue-500/40 text-blue-200 rounded-full font-black text-2xl">
-                        原價 1,500，社團補助 200
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 5. 集合與交通 -->
-        <div class="slide" style="transform: translateX(400%);">
-            <h2 class="slide-title">集合與交通</h2>
-            <div class="content-box">
-                <div class="card-bg mb-8">
-                    <p class="font-black text-2xl text-blue-400 mb-2 uppercase tracking-widest">BUS 861/863</p>
-                    <p class="text-3xl font-black">捷運淡水或紅樹林</p>
-                    <p class="opacity-60 text-xl mt-3 leading-relaxed">至「芝蘭入口」站後步行 9 分鐘</p>
-                    <div class="h-1 bg-white/10 my-8"></div>
-                    <p class="font-black text-2xl text-blue-400 mb-2 uppercase tracking-widest">MOTORCYCLE</p>
-                    <p class="text-3xl font-black">直接導航「農場」</p>
-                </div>
-                <a href="https://www.google.com/maps/search/?api=1&query=三芝老農夫農場"
-                    class="card-bg map-btn !p-0 rounded-[2rem] overflow-hidden" style="height: 320px;" target="_blank">
-                    <div class="flex flex-col items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-24 h-24 mb-4" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                        </svg>
-                        <p class="text-3xl font-black">開啟 Google Maps</p>
-                        <p class="text-xl opacity-60 mt-2">啟動導航至三芝老農夫農場</p>
-                    </div>
-                </a>
-            </div>
-        </div>
-
-        <!-- 6. 準備物品 (補全項目) -->
-        <div class="slide" style="transform: translateX(500%);">
-            <h2 class="slide-title">準備物品</h2>
-            <div class="content-box">
-                <div class="card-bg !p-4 mb-6">
-                    <table class="w-full">
-                        <tbody class="text-center font-black">
-                            <tr>
-                                <td>👕 換衣/拖</td>
-                                <td>🧼 沐浴/巾</td>
-                                <td><span class="highlight-blue">🍽️ 餐具</span></td>
-                            </tr>
-                            <tr>
-                                <td>🔋 充電/藥</td>
-                                <td>⛺ 睡墊枕*</td>
-                                <td><span class="warning-tag">🪥 牙刷膏</span></td>
-                            </tr>
-                            <tr>
-                                <td>🧻 衛生紙</td>
-                                <td><span class="highlight-blue">🩱 泳具</span></td>
-                                <td>🦟 防蚊液</td>
-                            </tr>
-                            <tr>
-                                <td>☂️ 雨具</td>
-                                <td>🔦 頭燈*</td>
-                                <td></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="card-bg p-10 bg-blue-900/30">
-                    <p class="text-blue-300 font-black mb-4 text-3xl">特別說明：</p>
-                    <p class="text-2xl opacity-90 leading-relaxed">"*" 標記可用衣物替代。餐具為必備。海邊戲水攜帶泳具請注意安全。</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- 7. 重要提醒 -->
-        <div class="slide" style="transform: translateX(600%);">
-            <h2 class="slide-title">注意事項</h2>
-            <div class="content-box">
-                <div class="card-bg border-l-[16px] border-red-500 mb-10 py-10">
-                    <p class="text-4xl font-black">🍱 第一天中午不供餐</p>
-                    <p class="opacity-60 text-2xl mt-4">請在出發集合前先行用餐</p>
-                </div>
-                <div class="card-bg border-l-[16px] border-blue-500 mb-10 py-10">
-                    <p class="text-4xl font-black">🌊 注意戲水安全</p>
-                    <p class="opacity-60 text-2xl mt-4">附近海邊戲水請確保自身安全</p>
-                </div>
-                <div class="card-bg border-l-[16px] border-green-500 py-10">
-                    <p class="text-4xl font-black">🦟 防蚊與保暖</p>
-                    <p class="opacity-60 text-2xl mt-4">留意氣候準備防蚊液與雨具</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- 8. 行程安排 (Day 1) - 新增回補 -->
-        <div class="slide" style="transform: translateX(700%);">
-            <h2 class="slide-title">第一天行程</h2>
-            <div class="content-box" style="margin-bottom:1rem">
-                <div class="card-bg space-y-6 py-6">
-                    <div class="flex justify-between text-3xl font-black"><span>14:00</span> <span>集合</span></div>
-                    <div class="flex justify-between text-3xl"><span>14:10</span> <span class="opacity-70">搭建帳篷</span>
-                    </div>
-                    <div class="flex justify-between text-3xl text-blue-400 font-black"><span>15:40</span>
-                        <span>活動時間</span></div>
-                    <div class="flex justify-between text-3xl"><span>17:00</span> <span class="opacity-70">準備晚餐</span>
-                    </div>
-                    <div class="flex justify-between text-3xl"><span>18:30</span> <span class="opacity-70">晚間活動</span>
-                    </div>
-                    <div class="flex justify-between text-3xl"><span>20:30</span> <span class="opacity-70">梳洗就寢</span>
-                    </div>
-                </div>
-            </div>
-
-            <h2 class="slide-title">第二天行程</h2>
-            <div class="content-box">
-                <div class="card-bg space-y-6 py-6">
-                    <div class="flex justify-between text-3xl font-black"><span>08:00</span> <span>早餐</span></div>
-                    <div class="flex justify-between text-3xl"><span>10:00</span> <span class="opacity-70">晨間閱讀</span>
-                    </div>
-                    <div class="flex justify-between text-3xl"><span>11:30</span> <span class="opacity-70">午餐時間</span>
-                    </div>
-                    <div class="flex justify-between text-3xl text-blue-400 font-black"><span>13:30</span> <span>海邊走走
-                            🌊</span></div>
-                    <div class="flex justify-between text-3xl"><span>17:30</span> <span class="opacity-70">晚餐時間</span>
-                    </div>
-                    <div class="flex justify-between text-3xl"><span>19:30</span> <span class="opacity-70">晚間活動</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 9. 行程安排 (Day 3) -->
-        <div class="slide" style="transform: translateX(800%);">
-            <h2 class="slide-title">第三天行程</h2>
-            <div class="content-box">
-                <div class="card-bg text-center space-y-12 py-20">
-                    <div class="flex justify-between text-3xl font-black"><span>08:00</span> <span>起床用膳</span></div>
-                    <div class="flex justify-between text-3xl"><span>10:00</span> <span class="opacity-70">場復收拾</span>
-                    </div>
-                    <div class="flex justify-between text-3xl text-blue-400 font-black"><span>11:30</span>
-                        <span>快樂回家</span></div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 10. 結尾 -->
-        <div class="slide" style="transform: translateX(900%);">
-            <div class="text-center">
-                <h1 class="text-9xl font-black mb-14 leading-none">Camping</h1>
-                <p class="text-4xl opacity-60 italic mb-20">享受大自然的美好</p>
-                <div class="card-bg inline-block px-20 py-16">
-                    <p class="text-3xl mb-6">若有問題隨時聯繫</p>
-                    <p class="text-blue-400 font-black text-5xl tracking-widest">Line 群組見！</p>
+                <div class="mt-16 px-12 py-5 bg-blue-500/40 text-blue-200 rounded-full font-black text-2xl">
+                    社團經費已全額補貼
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- 導航 -->
-    <button id="prev-slide" class="nav-button" aria-label="上一頁">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="4" stroke="currentColor"
-            class="w-8 h-8">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-        </svg>
-    </button>
-    <button id="next-slide" class="nav-button" aria-label="下一頁">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="4" stroke="currentColor"
-            class="w-8 h-8">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-        </svg>
-    </button>
+    <!-- 5. 集合與交通 -->
+    <div class="slide" style="transform: translateX(400%);">
+        <h2 class="slide-title">集合與交通</h2>
+        <div class="content-box">
+            <div class="card-bg mb-8">
+                <p class="font-black text-2xl text-blue-400 mb-2 uppercase tracking-widest">BUS 936</p>
+                <p class="text-3xl font-black">圓山站 2 號出口</p>
+                <p class="opacity-60 text-xl mt-3 leading-relaxed">直達校門口，班次約 20 分鐘</p>
+                <div class="h-1 bg-white/10 my-8"></div>
+                <p class="font-black text-2xl text-blue-400 mb-2 uppercase tracking-widest">MOTORCYCLE</p>
+                <p class="text-3xl font-black">直接導航「校門口」</p>
+            </div>
+            <a href="https://www.google.com/maps/search/?api=1&query=國立臺灣師範大學林口校區"
+                class="card-bg map-btn !p-0 rounded-[2rem] overflow-hidden" style="height: 320px;" target="_blank">
+                <div class="flex flex-col items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-24 h-24 mb-4" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                            d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                            d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    <p class="text-3xl font-black">開啟 Google Maps</p>
+                    <p class="text-xl opacity-60 mt-2">啟動導航至師大林口校區</p>
+                </div>
+            </a>
+        </div>
+    </div>
 
-    <div id="slide-counter">01 / 11</div>
+    <!-- 6. 準備物品 (補全項目) -->
+    <div class="slide" style="transform: translateX(500%);">
+        <h2 class="slide-title">準備物品</h2>
+        <div class="content-box">
+            <div class="card-bg !p-4 mb-6">
+                <table class="w-full">
+                    <tbody class="text-center font-black">
+                        <tr>
+                            <td>🩴 拖鞋</td>
+                            <td>👕 換衣</td>
+                            <td>🧼 沐浴</td>
+                        </tr>
+                        <tr>
+                            <td>🧣 毛巾</td>
+                            <td><span class="highlight-blue">🍽️ 餐具</span></td>
+                            <td>🔋 充電</td>
+                        </tr>
+                        <tr>
+                            <td>☁️ 枕頭*</td>
+                            <td>⛺ 睡墊*</td>
+                            <td><span class="warning-tag">🪥 牙刷膏</span></td>
+                        </tr>
+                        <tr>
+                            <td>💊 藥品</td>
+                            <td>🧻 衛生紙</td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="card-bg p-10 bg-blue-900/30">
+                <p class="text-blue-300 font-black mb-4 text-3xl">特別說明：</p>
+                <p class="text-2xl opacity-90 leading-relaxed">"*" 標記可用衣物替代。餐具為必備，請落實環境保護。</p>
+            </div>
+        </div>
+    </div>
 
-    <script>
-        const container = document.getElementById('slides-container');
-        const slides = document.querySelectorAll('.slide');
-        const prevBtn = document.getElementById('prev-slide');
-        const nextBtn = document.getElementById('next-slide');
-        const counter = document.getElementById('slide-counter');
-        let current = 0;
+    <!-- 7. 重要提醒 -->
+    <div class="slide" style="transform: translateX(600%);">
+        <h2 class="slide-title">注意事項</h2>
+        <div class="content-box">
+            <div class="card-bg border-l-[16px] border-red-500 mb-10 py-10">
+                <p class="text-4xl font-black">🍱 第一天中午不供餐</p>
+                <p class="opacity-60 text-2xl mt-4">請在出發集合前先行用餐</p>
+            </div>
+            <div class="card-bg border-l-[16px] border-yellow-500 mb-10 py-10">
+                <p class="text-4xl font-black">🍅 披薩食材請自備</p>
+                <p class="opacity-60 text-2xl mt-4">一人份為限以免造成浪費</p>
+            </div>
+            <div class="card-bg border-l-[16px] border-blue-500 py-10">
+                <p class="text-4xl font-black">🚿 僅有一間浴室</p>
+                <p class="opacity-60 text-2xl mt-4">請配合幹部安排時間輪流</p>
+            </div>
+        </div>
+    </div>
 
-        function update() {
-            slides.forEach((s, i) => {
-                s.style.transform = `translateX(${(i - current) * 100}%)`;
-            });
-            prevBtn.disabled = current === 0;
-            nextBtn.disabled = current === slides.length - 1;
-            counter.innerText = `${(current + 1).toString().padStart(2, '0')} / ${slides.length}`;
-        }
+    <!-- 8. 行程安排 (Day 1) - 新增回補 -->
+    <div class="slide" style="transform: translateX(700%);">
+        <h2 class="slide-title">第一天行程</h2>
+        <div class="content-box" style="margin-bottom:1rem">
+            <div class="card-bg space-y-8 py-10">
+                <div class="flex justify-between text-3xl font-black"><span>14:00</span> <span>小屋集合</span></div>
+                <div class="flex justify-between text-3xl"><span>14:40</span> <span class="opacity-70">設備參觀</span></div>
+                <div class="flex justify-between text-3xl text-blue-400 font-black"><span>16:00</span> <span>Pizza Time!
+                        🍕</span></div>
+                <div class="flex justify-between text-3xl"><span>19:30</span> <span class="opacity-70">晚間活動</span></div>
+                <div class="flex justify-between text-3xl"><span>20:30</span> <span class="opacity-70">盥洗就寢</span></div>
+                <div class="flex justify-between text-3xl"><span>21:00</span> <span class="opacity-70">i 珍食時間</span>
+                </div>
+            </div>
+        </div>
 
-        window.goToSlide = function (index) {
-            current = index;
-            update();
-        };
+        <h2 class="slide-title">第二天行程</h2>
+        <div class="content-box">
+            <div class="card-bg text-center space-y-12 py-20">
+                <div class="flex justify-between text-3xl font-black"><span>08:00</span> <span>林口在地早餐</span></div>
+                <div class="flex justify-between text-3xl"><span>10:00</span> <span class="opacity-70">晨間靜心閱讀</span>
+                </div>
+                <div class="flex justify-between text-3xl"><span>13:00</span> <span class="opacity-70">快樂踏上歸途</span>
+                </div>
+            </div>
+        </div>
+    </div>
 
-        const nextSlide = () => { if (current < slides.length - 1) current++; update(); };
-        const prevSlide = () => { if (current > 0) current--; update(); };
+    <!-- 9. 結尾 -->
+    <div class="slide" style="transform: translateX(800%);">
+        <div class="text-center w-full px-4">
+            <h1 class="text-[6rem] md:text-[8rem] font-black mb-6 leading-none text-orange-400">Pizza Time</h1>
+            <p class="text-3xl md:text-4xl opacity-60 italic mb-8">烤出屬於我們的驚喜</p>
 
-        prevBtn.onclick = prevSlide;
-        nextBtn.onclick = nextSlide;
+            <div class="mx-auto max-w-2xl cursor-pointer card-bg p-6 mb-8 rounded-3xl border-l-[8px] border-orange-400 hover:bg-white/10 transition-all transform hover:scale-105"
+                onclick="document.getElementById('joke-answer').classList.toggle('hidden'); document.getElementById('joke-hint').classList.toggle('hidden');">
 
-        // 滑動支援
-        let touchStartX = 0;
-        container.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; }, { passive: true });
-        container.addEventListener('touchend', e => {
-            const touchEndX = e.changedTouches[0].screenX;
-            if (touchEndX < touchStartX - 50) nextSlide();
-            if (touchEndX > touchStartX + 50) prevSlide();
-        }, { passive: true });
+                <div class="flex items-center justify-center gap-4 mb-2">
+                    <span class="text-4xl">🧊</span>
+                    <p class="text-3xl font-bold">什麼食物最誠實？</p>
+                </div>
 
+                <p id="joke-hint" class="text-lg opacity-50 mt-2 font-bold animate-pulse">（點擊看答案）</p>
+
+                <div id="joke-answer" class="hidden mt-6 pt-6 border-t border-white/20">
+                    <p class="text-4xl font-black text-orange-400 mb-3">披薩！🍕</p>
+                    <p class="text-2xl font-bold opacity-90 leading-relaxed">
+                        因為披薩有六片、有八片...<br>
+                        就是沒有<span class="text-blue-300 font-black text-3xl">「七片」(欺騙)</span>！
+                    </p>
+                </div>
+            </div>
+
+            <div class="card-bg inline-block px-12 py-8 rounded-3xl">
+                <p class="text-2xl mb-4 font-bold">若有問題隨時聯繫</p>
+                <p class="text-blue-400 font-black text-4xl tracking-widest">Line 群組見！</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 導航 -->
+<button id="prev-slide" class="nav-button" aria-label="上一頁">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="4" stroke="currentColor"
+        class="w-8 h-8">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+    </svg>
+</button>
+<button id="next-slide" class="nav-button" aria-label="下一頁">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="4" stroke="currentColor"
+        class="w-8 h-8">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+    </svg>
+</button>
+
+<div id="slide-counter">01 / 10</div>
+
+<script>
+    const container = document.getElementById('slides-container');
+    const slides = document.querySelectorAll('.slide');
+    const prevBtn = document.getElementById('prev-slide');
+    const nextBtn = document.getElementById('next-slide');
+    const counter = document.getElementById('slide-counter');
+    let current = 0;
+
+    function update() {
+        slides.forEach((s, i) => {
+            s.style.transform = `translateX(${(i - current) * 100}%)`;
+        });
+        prevBtn.disabled = current === 0;
+        nextBtn.disabled = current === slides.length - 1;
+        counter.innerText = `${(current + 1).toString().padStart(2, '0')} / ${slides.length}`;
+    }
+
+    window.goToSlide = function (index) {
+        current = index;
         update();
-    </script>
-</body>
+    };
 
-</html>
+    const nextSlide = () => { if (current < slides.length - 1) current++; update(); };
+    const prevSlide = () => { if (current > 0) current--; update(); };
+
+    prevBtn.onclick = prevSlide;
+    nextBtn.onclick = nextSlide;
+
+    // 滑動支援
+    let touchStartX = 0;
+    container.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; }, { passive: true });
+    container.addEventListener('touchend', e => {
+        const touchEndX = e.changedTouches[0].screenX;
+        if (touchEndX < touchStartX - 50) nextSlide();
+        if (touchEndX > touchStartX + 50) prevSlide();
+    }, { passive: true });
+
+    update();
+</script>
