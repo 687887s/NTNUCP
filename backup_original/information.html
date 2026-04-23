@@ -12,40 +12,10 @@
     <style>
         body {
             font-family: 'Inter', 'Noto Sans TC', sans-serif;
-            background: linear-gradient(135deg, #092338 0%, #0f3e61 50%, #1c7293 100%);
+            background-color: #092338;
             color: #efeee1;
             overflow: hidden;
             margin: 0;
-        }
-
-        /* 🌊 海浪背景動畫 */
-        body::before {
-            content: '';
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 200%;
-            height: 25vh;
-            background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1200 120" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"><path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V120H0V95.8C59.71,118.08,130.83,119.34,201.2,109.81,241.6,104.33,281.42,88.75,321.39,56.44Z" fill="%2360a5fa" fill-opacity="0.15"/></svg>');
-            background-size: 50% 100%;
-            animation: wave 15s linear infinite;
-            z-index: -1;
-        }
-        body::after {
-            content: '';
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 200%;
-            height: 18vh;
-            background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1200 120" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"><path d="M985.66,92.83C906.67,72,823.78,31,743.84,14.19c-82.26-17.34-168.06-16.33-250.45.39-57.84,11.73-114,31.07-172,41.86A600.21,600.21,0,0,1,0,27.35V120H1200V95.8C1132.19,118.92,1055.71,111.31,985.66,92.83Z" fill="%2338bdf8" fill-opacity="0.25"/></svg>');
-            background-size: 50% 100%;
-            animation: wave 10s linear infinite reverse;
-            z-index: -1;
-        }
-        @keyframes wave {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
         }
 
         #slides-container {
@@ -67,7 +37,7 @@
             align-items: center;
             padding: 3rem;
             box-sizing: border-box;
-            background: transparent;
+            background-color: #092338;
             transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
             line-height: 1.6;
         }
@@ -97,13 +67,12 @@
             font-weight: 400;
         }
 
-        /* 👑 同步 Mobile 的卡片質感 (海浪透光感) */
+        /* 👑 同步 Mobile 的卡片質感 (微邊框、深陰影) */
         .card-bg {
-            background-color: rgba(15, 62, 97, 0.45);
-            border: 1px solid rgba(135, 206, 235, 0.2);
+            background-color: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.12);
             border-radius: 1.5rem;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(135, 206, 235, 0.05);
-            backdrop-filter: blur(15px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
         }
 
         /* 導航按鈕 */
