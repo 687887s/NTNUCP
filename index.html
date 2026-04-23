@@ -162,19 +162,27 @@
             var mode = (window.innerWidth > 1000) ? 'pc' : 'mobile';
             console.log("偵測到模式:", mode);
 
-            // 2. 向後端請求內容
-            google.script.run.withSuccessHandler(function (htmlContent) {
-                var contentDiv = document.getElementById('content');
-                contentDiv.innerHTML = htmlContent;
-                var loadingScreen = document.getElementById('loading-screen');
-                loadingScreen.style.opacity = '0'; // 觸發 CSS transition
-                setTimeout(function () {
-                    loadingScreen.style.display = 'none'; // 動畫播完後徹底隱藏
-                }, 500);
-                // 3. 重要：手動觸發注入的腳本
-                executeInjectedScripts(contentDiv);
+            // 2. 決定要讀取的檔案名稱
+            var targetPage = (mode === 'pc') ? 'information.html' : 'information_phone.html';
+            // 3. 使用 fetch 請求該靜態檔案
+            fetch(targetPage)
+                .then(response => response.text())
+                .then(htmlContent => {
+                    var contentDiv = document.getElementById('content');
+                    contentDiv.innerHTML = htmlContent;
 
-            }).getFileContent(mode);
+                    var loadingScreen = document.getElementById('loading-screen');
+                    loadingScreen.style.opacity = '0';
+                    setTimeout(function () {
+                        loadingScreen.style.display = 'none';
+                    }, 500);
+
+                    executeInjectedScripts(contentDiv);
+                })
+                .catch(error => {
+                    console.error("載入頁面失敗:", error);
+                    document.getElementById('content').innerHTML = "<p style='color:white; text-align:center;'>載入失敗，請重新整理。</p>";
+                });
         };
 
         // 讓動態注入的 <script> 標籤能夠執行的函數
