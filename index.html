@@ -154,7 +154,7 @@
         <div class="title">NTNU CAMPING CLUB</div>
     </div>
 
-    <div id="content"></div>
+    <iframe id="content-frame" style="width: 100%; height: 100vh; border: none; display: none;"></iframe>
 
     <script>
         window.onload = function () {
@@ -164,37 +164,20 @@
 
             // 2. 決定要讀取的檔案名稱
             var targetPage = (mode === 'pc') ? 'information.html' : 'information_phone.html';
-            // 3. 使用 fetch 請求該靜態檔案
-            fetch(targetPage)
-                .then(response => response.text())
-                .then(htmlContent => {
-                    var contentDiv = document.getElementById('content');
-                    contentDiv.innerHTML = htmlContent;
-
-                    var loadingScreen = document.getElementById('loading-screen');
-                    loadingScreen.style.opacity = '0';
-                    setTimeout(function () {
-                        loadingScreen.style.display = 'none';
-                    }, 500);
-
-                    executeInjectedScripts(contentDiv);
-                })
-                .catch(error => {
-                    console.error("載入頁面失敗:", error);
-                    document.getElementById('content').innerHTML = "<p style='color:white; text-align:center;'>載入失敗，請重新整理。</p>";
-                });
+            
+            // 3. 使用 iframe 載入以避免 Tailwind 重複載入的效能問題
+            var frame = document.getElementById('content-frame');
+            frame.src = targetPage;
+            
+            frame.onload = function() {
+                frame.style.display = 'block';
+                var loadingScreen = document.getElementById('loading-screen');
+                loadingScreen.style.opacity = '0';
+                setTimeout(function () {
+                    loadingScreen.style.display = 'none';
+                }, 500);
+            };
         };
-
-        // 讓動態注入的 <script> 標籤能夠執行的函數
-        function executeInjectedScripts(container) {
-            var scripts = container.querySelectorAll("script");
-            scripts.forEach(function (oldScript) {
-                var newScript = document.createElement("script");
-                Array.from(oldScript.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value));
-                newScript.appendChild(document.createTextNode(oldScript.innerHTML));
-                oldScript.parentNode.replaceChild(newScript, oldScript);
-            });
-        }
     </script>
 </body>
 
