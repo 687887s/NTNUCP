@@ -3,6 +3,7 @@
 
 <head>
     <base target="_top">
+    <meta name="version" content="1.0.0">
     <script src="https://cdn.tailwindcss.com"></script>
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Noto+Sans+TC:wght@400;700&display=swap"
@@ -195,12 +196,14 @@
 
     <script>
         window.onload = function () {
+            const VERSION = '1.0.0';
             // 1. 判斷裝置
             var mode = (window.innerWidth > 1000) ? 'pc' : 'mobile';
-            console.log("偵測到模式:", mode);
+            console.log("偵測到模式:", mode, "版本:", VERSION);
 
-            // 2. 決定要讀取的檔案名稱
+            // 2. 決定要讀取的檔案名稱 (加入版本號以避免快取問題)
             var targetPage = (mode === 'pc') ? 'information.html' : 'information_phone.html';
+            targetPage += '?v=' + VERSION;
 
             // 3. 使用 iframe 載入以避免 Tailwind 重複載入的效能問題
             var frame = document.getElementById('content-frame');
