@@ -27,6 +27,7 @@
             animation: wave 15s linear infinite;
             z-index: -1;
         }
+
         body::after {
             content: '';
             position: fixed;
@@ -39,9 +40,15 @@
             animation: wave 10s linear infinite reverse;
             z-index: -1;
         }
+
         @keyframes wave {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
+            0% {
+                transform: translateX(0);
+            }
+
+            100% {
+                transform: translateX(-50%);
+            }
         }
 
         .loading-screen {
