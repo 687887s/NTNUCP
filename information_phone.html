@@ -80,6 +80,11 @@
             overflow: hidden;
         }
 
+        /* 景深模糊效果 (減少模糊度使其更自然) */
+        .bg-blurred {
+            filter: blur(3.5px) brightness(0.88);
+        }
+
         /* 景深模糊效    /* ✨ 雙層自然細微星空 (增密至合計約 80 顆星點，增強發光與尺寸) */
         #bg-container::before {
             content: '';
