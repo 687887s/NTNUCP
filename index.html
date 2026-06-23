@@ -3,53 +3,15 @@
 
 <head>
     <base target="_top">
-    <meta name="version" content="1.0.0">
     <script src="https://cdn.tailwindcss.com"></script>
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Noto+Sans+TC:wght@400;700&display=swap"
         rel="stylesheet">
     <style>
         body {
-            background: linear-gradient(to bottom, #092338 0%, #0f3e61 50%, #1c7293 100%);
+            background-color: #092338;
             margin: 0;
             padding: 0;
-            overflow: hidden;
-        }
-
-        body::before {
-            content: '';
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 200%;
-            height: 25vh;
-            background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1200 120" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"><path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V120H0V95.8C59.71,118.08,130.83,119.34,201.2,109.81,241.6,104.33,281.42,88.75,321.39,56.44Z" fill="%2360a5fa" fill-opacity="0.15"/></svg>');
-            background-size: 50% 100%;
-            animation: wave 15s linear infinite;
-            z-index: -1;
-        }
-
-        body::after {
-            content: '';
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 200%;
-            height: 18vh;
-            background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1200 120" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"><path d="M985.66,92.83C906.67,72,823.78,31,743.84,14.19c-82.26-17.34-168.06-16.33-250.45.39-57.84,11.73-114,31.07-172,41.86A600.21,600.21,0,0,1,0,27.35V120H1200V95.8C1132.19,118.92,1055.71,111.31,985.66,92.83Z" fill="%2338bdf8" fill-opacity="0.25"/></svg>');
-            background-size: 50% 100%;
-            animation: wave 10s linear infinite reverse;
-            z-index: -1;
-        }
-
-        @keyframes wave {
-            0% {
-                transform: translateX(0);
-            }
-
-            100% {
-                transform: translateX(-50%);
-            }
         }
 
         .loading-screen {
@@ -71,12 +33,36 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            /* 加入深海藍與湖水綠漸層 */
-            background: radial-gradient(circle at center, #153c5e 0%, rgba(9, 35, 56, 0.8) 100%);
+            /* 調整為深藍黑到田園綠漸層 */
+            background: radial-gradient(circle at center, #0c1c2e 0%, #05140f 100%);
             z-index: 9999;
             color: white;
             /* 讓讀取畫面消失時有平滑的淡出效果 */
             transition: opacity 0.5s ease-out;
+        }
+
+        /* 簡單的載入畫面螢火蟲 */
+        .loading-firefly {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            background: #f2e597; /* 暖黃色 */
+            border-radius: 50%;
+            box-shadow: 0 0 10px #f3e79b, 0 0 20px #e2c974;
+            opacity: 0;
+            animation: lf-float infinite ease-in-out;
+            pointer-events: none;
+        }
+        .loading-firefly:nth-child(1) { left: 15%; top: 75%; animation: lf-float 10s infinite; }
+        .loading-firefly:nth-child(2) { left: 80%; top: 25%; animation: lf-float 12s infinite 1s; }
+        .loading-firefly:nth-child(3) { left: 45%; top: 85%; animation: lf-float 8s infinite 2s; }
+        .loading-firefly:nth-child(4) { left: 85%; top: 70%; animation: lf-float 14s infinite 0.5s; }
+
+        @keyframes lf-float {
+            0%, 100% { transform: translate(0, 0); opacity: 0; }
+            30% { opacity: 0.8; }
+            60% { transform: translate(3vw, -8vh); opacity: 0.2; }
+            80% { opacity: 0.7; }
         }
 
         /* 現代感雙環發光旋轉器 */
@@ -93,11 +79,10 @@
             height: 100%;
             border-radius: 50%;
             border: 3px solid transparent;
-            border-top-color: #38bdf8;
-            /* 海藍色 */
-            border-right-color: #38bdf8;
-            animation: spin 1.5s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-            box-shadow: 0 0 20px rgba(56, 189, 248, 0.5);
+            border-top-color: #e2c974; /* 香檳金 */
+            border-right-color: #e2c974;
+            animation: spin 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+            box-shadow: 0 0 15px rgba(226, 201, 116, 0.4);
             /* 發光效果 */
         }
 
@@ -106,12 +91,11 @@
             height: 70%;
             top: 15%;
             left: 15%;
-            border-top-color: #67e8f9;
-            /* 湖水綠 */
+            border-top-color: #52b788; /* 稻葉綠 */
             border-right-color: transparent;
-            border-left-color: #67e8f9;
-            animation: spin-reverse 1.2s ease-in-out infinite;
-            box-shadow: 0 0 15px rgba(103, 232, 249, 0.4);
+            border-left-color: #52b788;
+            animation: spin-reverse 1s linear infinite;
+            box-shadow: 0 0 10px rgba(82, 183, 136, 0.3);
         }
 
         @keyframes spin {
@@ -141,11 +125,11 @@
             /* 增加字距更顯大氣 */
             font-weight: 800;
             margin-bottom: 12px;
-            /* 水波光澤漸層字 */
-            background: linear-gradient(to right, #ffffff, #67e8f9, #38bdf8);
+            /* 金屬光澤漸層字 */
+            background: linear-gradient(to right, #ffffff, #e2c974);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            animation: pulse-text 3s ease-in-out infinite;
+            animation: pulse-text 2s ease-in-out infinite;
         }
 
         .subtitle {
@@ -160,12 +144,12 @@
             0%,
             100% {
                 opacity: 0.8;
-                filter: drop-shadow(0 0 2px rgba(147, 197, 253, 0));
+                filter: drop-shadow(0 0 2px rgba(226, 201, 116, 0));
             }
 
             50% {
                 opacity: 1;
-                filter: drop-shadow(0 0 8px rgba(147, 197, 253, 0.6));
+                filter: drop-shadow(0 0 8px rgba(226, 201, 116, 0.6));
             }
         }
 
@@ -185,6 +169,10 @@
 
 <body>
     <div id="loading-screen">
+        <div class="loading-firefly"></div>
+        <div class="loading-firefly"></div>
+        <div class="loading-firefly"></div>
+        <div class="loading-firefly"></div>
         <div class="loader-wrapper">
             <div class="spinner-ring"></div>
             <div class="spinner-ring"></div>
@@ -196,27 +184,33 @@
 
     <script>
         window.onload = function () {
-            const VERSION = '1.0.0';
             // 1. 判斷裝置
             var mode = (window.innerWidth > 1000) ? 'pc' : 'mobile';
-            console.log("偵測到模式:", mode, "版本:", VERSION);
+            console.log("偵測到模式:", mode);
 
-            // 2. 決定要讀取的檔案名稱 (加入版本號以避免快取問題)
+            const VERSION = '1.0.1';
+            // 2. 決定要讀取的檔案名稱
             var targetPage = (mode === 'pc') ? 'information.html' : 'information_phone.html';
-            targetPage += '?v=' + VERSION;
 
-            // 3. 使用 iframe 載入以避免 Tailwind 重複載入的效能問題
-            var frame = document.getElementById('content-frame');
-            frame.src = targetPage;
+            // 3. 解決 file:// 協議下無法打開網頁檔案的問題
+            if (window.location.protocol === 'file:') {
+                // 本地 file 協議：不加 ?v= 以免找不到檔案，且直接重定向跳轉以規避 iframe CORS 限制
+                window.location.replace(targetPage);
+            } else {
+                targetPage += '?v=' + VERSION;
+                // http/https 協議：使用原有的 iframe 載入和動畫
+                var frame = document.getElementById('content-frame');
+                frame.src = targetPage;
 
-            frame.onload = function () {
-                frame.style.display = 'block';
-                var loadingScreen = document.getElementById('loading-screen');
-                loadingScreen.style.opacity = '0';
-                setTimeout(function () {
-                    loadingScreen.style.display = 'none';
-                }, 500);
-            };
+                frame.onload = function () {
+                    frame.style.display = 'block';
+                    var loadingScreen = document.getElementById('loading-screen');
+                    loadingScreen.style.opacity = '0';
+                    setTimeout(function () {
+                        loadingScreen.style.display = 'none';
+                    }, 500);
+                };
+            }
         };
     </script>
 </body>
