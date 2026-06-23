@@ -17,6 +17,7 @@
         --card-padding: 0.85rem;
         --content-max-width: 94vw;
         --base-gap: 1rem;
+        --land-base-color: #010603; /* 陸地底座顏色，可調整 */
     }
 
     @media (min-width: 480px) {
@@ -255,6 +256,18 @@
         0%, 100% { opacity: 0.85; box-shadow: 0 0 8px #ffffff, 0 0 12px #fcefb4; }
         4.5%, 12.5%, 41.5%, 68.5%, 85.5% { opacity: 0.25; box-shadow: 0 0 2px #ffffff, 0 0 4px #fcefb4; }
         5%, 13%, 42%, 69%, 86% { opacity: 1.0; box-shadow: 0 0 12px #ffffff, 0 0 20px #fcefb4; }
+    }
+
+    /* ⬛ 陸地方形底座 */
+    .land-base {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 8vh;
+        background-color: var(--land-base-color);
+        z-index: 1;
+        pointer-events: none;
     }
 
     /* 🌾 隨風擺動稻穗作物 (手機版高度 12vh) */
@@ -590,6 +603,7 @@
         <div class="firefly"></div>
         <div class="firefly"></div>
         <div class="firefly"></div>
+        <div class="land-base"></div>
         <!-- 隨風擺動稻穗 (手機版高度 12vh，重構為三層極纖細) -->
         <div class="crops-container" style="height: 12vh;">
             <svg viewBox="0 0 1200 120" preserveAspectRatio="none" class="crops-svg">
