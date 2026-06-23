@@ -4,7 +4,7 @@
 <head>
     <base target="_top">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="version" content="2.0.0-Release">
+    <meta name="version" content="2.0.1-Release">
     <script src="https://cdn.tailwindcss.com"></script>
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Noto+Sans+TC:wght@400;700;900&display=swap"
@@ -549,6 +549,16 @@
             line-height: 1.6;
         }
 
+        .fireflies-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 2;
+        }
+
         .firefly {
             position: absolute;
             width: 6px;
@@ -558,6 +568,7 @@
             border-radius: 50%;
             box-shadow: 0 0 10px #f3e79b, 0 0 20px #e2c974;
             opacity: 0;
+            filter: blur(0.5px);
             pointer-events: none;
         }
 
@@ -913,13 +924,15 @@
         </div>
 
         <!-- 螢火蟲 -->
-        <div class="firefly"></div>
-        <div class="firefly"></div>
-        <div class="firefly"></div>
-        <div class="firefly"></div>
-        <div class="firefly"></div>
-        <div class="firefly"></div>
-        <div class="firefly"></div>
+        <div class="fireflies-container">
+            <div class="firefly"></div>
+            <div class="firefly"></div>
+            <div class="firefly"></div>
+            <div class="firefly"></div>
+            <div class="firefly"></div>
+            <div class="firefly"></div>
+            <div class="firefly"></div>
+        </div>
         <div class="land-base"></div>
         <!-- 隨風擺動稻穗 (重構為三層極纖細) -->
         <div class="crops-container" style="height: 18vh;">

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="version" content="2.0.0-Release">
+    <meta name="version" content="2.0.1-Release">
     <title>期末包棟 - 行前說明手冊</title>
     <!-- 引入 Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -550,7 +550,17 @@
             }
         }
 
-        /* 🌟 螢火蟲 (行動端輕量化，改為暖金黃色) */
+        .fireflies-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        /* 🌟 螢火蟲 (行動端輕量化，改為暖金黃色，套用模糊效果) */
         .firefly {
             position: absolute;
             width: 5px;
@@ -559,6 +569,7 @@
             border-radius: 50%;
             box-shadow: 0 0 8px #f3e79b, 0 0 16px #e2c974;
             opacity: 0;
+            filter: blur(0.5px);
             pointer-events: none;
         }
 
@@ -586,6 +597,24 @@
             animation: float-6 14s infinite ease-in-out 2s;
         }
 
+        .firefly:nth-child(5) {
+            left: 30%;
+            top: 85%;
+            animation: float-2 13s infinite ease-in-out 1.5s;
+        }
+
+        .firefly:nth-child(6) {
+            left: 60%;
+            top: 75%;
+            animation: float-4 16s infinite ease-in-out 2.5s;
+        }
+
+        .firefly:nth-child(7) {
+            left: 20%;
+            top: 70%;
+            animation: float-7 14s infinite ease-in-out 0.8s;
+        }
+
         @keyframes float-1 {
 
             0%,
@@ -608,6 +637,28 @@
             }
         }
 
+        @keyframes float-2 {
+
+            0%,
+            100% {
+                transform: translate(0, 0) scale(0.8);
+                opacity: 0;
+            }
+
+            20% {
+                opacity: 0.75;
+            }
+
+            50% {
+                transform: translate(-5vw, -10vh) scale(1.1);
+                opacity: 0.35;
+            }
+
+            80% {
+                opacity: 0.85;
+            }
+        }
+
         @keyframes float-3 {
 
             0%,
@@ -627,6 +678,28 @@
 
             75% {
                 opacity: 0.8;
+            }
+        }
+
+        @keyframes float-4 {
+
+            0%,
+            100% {
+                transform: translate(0, 0) scale(1);
+                opacity: 0;
+            }
+
+            30% {
+                opacity: 0.8;
+            }
+
+            60% {
+                transform: translate(7vw, -13vh) scale(0.8);
+                opacity: 0.4;
+            }
+
+            85% {
+                opacity: 0.75;
             }
         }
 
@@ -671,6 +744,28 @@
 
             85% {
                 opacity: 0.8;
+            }
+        }
+
+        @keyframes float-7 {
+
+            0%,
+            100% {
+                transform: translate(0, 0) scale(0.9);
+                opacity: 0;
+            }
+
+            15% {
+                opacity: 0.85;
+            }
+
+            45% {
+                transform: translate(-6vw, -8vh) scale(1.1);
+                opacity: 0.25;
+            }
+
+            75% {
+                opacity: 0.9;
             }
         }
 
@@ -860,10 +955,15 @@
         </div>
 
         <!-- 螢火蟲 -->
-        <div class="firefly"></div>
-        <div class="firefly"></div>
-        <div class="firefly"></div>
-        <div class="firefly"></div>
+        <div class="fireflies-container">
+            <div class="firefly"></div>
+            <div class="firefly"></div>
+            <div class="firefly"></div>
+            <div class="firefly"></div>
+            <div class="firefly"></div>
+            <div class="firefly"></div>
+            <div class="firefly"></div>
+        </div>
         <div class="land-base"></div>
         <!-- 隨風擺動稻穗 (手機版高度 12vh，重構為三層極纖細) -->
         <div class="crops-container" style="height: 12vh;">
