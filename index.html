@@ -226,29 +226,22 @@
             var mode = (window.innerWidth > 1000) ? 'pc' : 'mobile';
             console.log("偵測到模式:", mode);
 
-            const VERSION = '2.0.3-Release';
+            const VERSION = '2.0.4-Release';
             // 2. 決定要讀取的檔案名稱
             var targetPage = (mode === 'pc') ? 'information.html' : 'information_phone.html';
 
-            // 3. 解決 file:// 協議下無法打開網頁檔案的問題
-            if (window.location.protocol === 'file:') {
-                // 本地 file 協議：不加 ?v= 以免找不到檔案，且直接重定向跳轉以規避 iframe CORS 限制
-                window.location.replace(targetPage);
-            } else {
-                targetPage += '?v=' + VERSION;
-                // http/https 協議：使用原有的 iframe 載入和動畫
-                var frame = document.getElementById('content-frame');
-                frame.src = targetPage;
+            // 3. 使用 iframe 載入以避免 Tailwind 重複載入的效能問題
+            var frame = document.getElementById('content-frame');
+            frame.src = targetPage;
 
-                frame.onload = function () {
-                    frame.style.display = 'block';
-                    var loadingScreen = document.getElementById('loading-screen');
-                    loadingScreen.style.opacity = '0';
-                    setTimeout(function () {
-                        loadingScreen.style.display = 'none';
-                    }, 500);
-                };
-            }
+            frame.onload = function () {
+                frame.style.display = 'block';
+                var loadingScreen = document.getElementById('loading-screen');
+                loadingScreen.style.opacity = '0';
+                setTimeout(function () {
+                    loadingScreen.style.display = 'none';
+                }, 500);
+            };
         };
     </script>
 </body>
