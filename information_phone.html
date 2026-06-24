@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="version" content="2.0.5-Release">
+    <meta name="version" content="2.0.6-Release">
     <title>期末包棟 - 行前說明手冊</title>
     <!-- 引入 Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -930,17 +930,7 @@
             animation: swipe-dot 2.5s ease-in-out infinite;
         }
 
-        #slide-counter {
-            position: fixed;
-            bottom: 3.5rem;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 1.4rem;
-            color: rgba(239, 238, 225, 0.5);
-            font-weight: 800;
-            letter-spacing: 0.4rem;
-            z-index: 50;
-        }
+
     </style>
 </head>
 
@@ -1035,7 +1025,6 @@
                 <div class="toc-item card-bg" onclick="goToSlide(5)">04 準備物品</div>
                 <div class="toc-item card-bg" onclick="goToSlide(6)">05 注意事項</div>
                 <div class="toc-item card-bg" onclick="goToSlide(7)">06 行程安排</div>
-                <div class="toc-item card-bg" onclick="goToSlide(8)">07 Day 3</div>
             </div>
         </div>
 
@@ -1258,25 +1247,23 @@
     <!-- 導航 (改回 backup 大尺寸箭頭與頁碼計數器) -->
     <button id="prev-slide" class="nav-button" aria-label="上一頁">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="4" stroke="currentColor"
-            class="w-8 h-8">
+            class="w-5 h-5">
             <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
         </svg>
     </button>
     <button id="next-slide" class="nav-button" aria-label="下一頁">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="4" stroke="currentColor"
-            class="w-8 h-8">
+            class="w-5 h-5">
             <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
         </svg>
     </button>
 
-    <div id="slide-counter">01 / 10</div>
 
     <script>
         const container = document.getElementById('slides-container');
         const slides = document.querySelectorAll('.slide');
         const prevBtn = document.getElementById('prev-slide');
         const nextBtn = document.getElementById('next-slide');
-        const counter = document.getElementById('slide-counter');
         let current = 0;
 
         // 防抖機制，避免快速點擊或 Ghost Click 造成跳頁
@@ -1298,9 +1285,6 @@
             });
             prevBtn.disabled = current === 0;
             nextBtn.disabled = current === slides.length - 1;
-            if (counter) {
-                counter.innerText = `${(current + 1).toString().padStart(2, '0')} / ${slides.length}`;
-            }
 
             // 背景動態模糊與亮度調整
             const bgContainer = document.getElementById('bg-container');
