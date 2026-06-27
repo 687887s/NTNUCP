@@ -229,13 +229,13 @@
             var mode = (window.innerWidth > 1000) ? 'pc' : 'mobile';
             console.log("偵測到模式:", mode);
 
-            const VERSION = '2.0.16-Release';
+            const VERSION = '2.0.17-Release';
             // 2. 決定要讀取的檔案名稱
             var targetPage = (mode === 'pc') ? 'information.html' : 'information_phone.html';
 
             // 3. 使用 iframe 載入以避免 Tailwind 重複載入的效能問題
             var frame = document.getElementById('content-frame');
-            frame.src = targetPage;
+            frame.src = targetPage + '?v=' + VERSION;
 
             frame.onload = function () {
                 frame.style.display = 'block';
